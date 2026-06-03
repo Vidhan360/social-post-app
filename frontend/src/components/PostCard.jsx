@@ -251,7 +251,10 @@ const PostCard = ({ post }) => {
         {post.image && (
           <Box
             component="img"
-            src={`http://localhost:5000${post.image}`}
+            src={`${import.meta.env.VITE_API_URL.replace(
+           "/api",
+           ""
+            )}${post.image}`}
             alt="post"
             onClick={() =>
               setOpenPost(
