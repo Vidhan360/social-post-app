@@ -20,6 +20,8 @@ import { motion } from "framer-motion";
 
 import { useNavigate } from "react-router-dom";
 
+import { useAuth } from "../context/AuthContext";
+
 import { toast } from "react-toastify";
 
 import axios from "axios";
@@ -28,6 +30,7 @@ import AuthLayout from "../components/AuthLayout";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [showPassword, setShowPassword] =
     useState(false);
@@ -61,25 +64,26 @@ const Login = () => {
           formData
         );
 
-      if (response.data.success) {
-        localStorage.setItem(
-          "token",
-          response.data.token
-        );
+if (response.data.success) {
+  login(
+    response.data.token
+  );
 
-        localStorage.setItem(
-          "user",
-          JSON.stringify(
-            response.data.user
-          )
-        );
+  localStorage.setItem(
+    "user",
+    JSON.stringify(
+      response.data.user
+    )
+  );
 
-        toast.success(
-          "Login Successful"
-        );
+  toast.success(
+    "Login Successful"
+  );
 
-        navigate("/");
-      }
+  navigate("/", {
+    replace: true,
+  });
+}
     } catch (error) {
       toast.error(
         error.response?.data
